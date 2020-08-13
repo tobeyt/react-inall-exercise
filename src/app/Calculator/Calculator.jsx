@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import "./calculator.less";
 
 const Calculator = () => {
   const [valueText, setValueText] = useState("");
@@ -61,19 +62,37 @@ const Calculator = () => {
   const buttonList = [];
   value.forEach((cur, index) => {
     buttonList.push(
-      <button key={index} onClick={() => handleValueInput(cur)}>
+      <button
+        className={
+          cur === "+"
+            ? "add"
+            : cur === "-"
+            ? "minus"
+            : cur === "x"
+            ? "multiply"
+            : cur === "Clear"
+            ? "reset"
+            : cur === "="
+            ? "equals"
+            : "others"
+        }
+        key={index}
+        onClick={() => handleValueInput(cur)}
+      >
         {cur}
       </button>
     );
   });
   return (
-    <div>
-      <div className="databar">
-        <h1>在线计算器</h1>
-        <input type="text" value={valueText} readOnly />
+    <div className="calculator">
+      <h1>在线计算器</h1>
+      <div className="bar">
+        <input className="screen" type="text" value={valueText} readOnly />
+        <div className="buttonlist">{buttonList}</div>
       </div>
-      <div className="buttonlist">{buttonList}</div>
-      <Link to="/">回到主页</Link>
+      <Link className="link" to="/">
+        回到主页
+      </Link>
     </div>
   );
 };
