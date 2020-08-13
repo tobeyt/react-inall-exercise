@@ -20,39 +20,30 @@ const Calculator = () => {
     "Clear",
     "=",
   ];
-  var calculate = function (s) {
-    s = s.replace(/ /g, "");
-    let numStr = "",
-      lastSymbol = "",
-      numStack = [];
-    for (let i = 0; i <= s.length; i++) {
-      if (/[\+\-\x\/]/.test(s[i]) || i == s.length) {
-        switch (lastSymbol) {
-          case "x":
-            numStack.push(numStack.pop() * parseInt(numStr));
-            break;
-          case "/":
-            numStack.push(~~(numStack.pop() / parseInt(numStr)));
-            break;
-          case "-":
-            numStack.push(-parseInt(numStr));
-            break;
-          default:
-            numStack.push(parseInt(numStr));
-        }
-        lastSymbol = s[i];
-        numStr = "";
-        continue;
-      }
-      numStr += s[i];
+
+  const calculate = (arr) => {
+    if (arr[1] === "+") {
+      return Number(arr[0]) + Number(arr[2]);
+    } else if (arr[1] === "-") {
+      return Number(arr[0]) - Number(arr[2]);
+    } else if (arr[1] === "x") {
+      return Number(arr[0]) * Number(arr[2]);
     }
-    return numStack.reduce((_, val) => _ + val, 0);
   };
 
   const handleValueInput = (value) => {
     switch (value) {
       case "=":
-        setValueText(String(calculate(valueText)));
+        const res = valueText.split(" ");
+        if (
+          !isNaN(Number(res[0])) &&
+          (res[1] === "x" || res[1] === "+" || res[1] === "-") &&
+          !isNaN(Number(res[2]))
+        ) {
+          setValueText(String(calculate(res)));
+        } else {
+          setValueText("");
+        }
         break;
       case "Clear":
         setValueText("");
